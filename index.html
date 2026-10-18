@@ -1,26 +1,5 @@
 <!DOCTYPE html>
-<html lang="id"><head><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Faizal & Resti - Wedding</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -101,26 +80,31 @@ body.stay-bright #cartoonOverlay{
 }
 
 
-#musicControl:hover{transform:scale(1.08);border-color:#FFD0D6;box-shadow:0 6px 25px rgba(0,0,0,.5),0 0 20px rgba(201,169,140,.25)}
-#musicControl:active{transform:scale(0.95)}
-#musicControl.playing{background:rgba(201,169,140,0.18);border-color:#FFD0D6;box-shadow:0 0 0 1px rgba(255,208,214,.25),0 4px 20px rgba(201,169,140,.25)}
-#musicControl.playing #musicIcon{animation:musicPulse 1.4s ease-in-out infinite}
-#musicControl.muted{background:rgba(80,80,80,0.6);border-color:#666;opacity:.7}
-#musicControl.muted #musicIcon{opacity:.6}
-@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+#musicControl:hover{transform:scale(1.08);border-color:#FFD0D6}
+#musicControl.playing{background:rgba(201,169,140,0.22);border-color:#FFD0D6;box-shadow:0 0 0 2px rgba(255,208,214,.3),0 6px 25px rgba(201,169,140,.3)}
+#musicControl.playing #musicIcon{animation:musicPulse 1.3s ease-in-out infinite}
+#musicControl.muted{background:rgba(80,80,80,0.7);border-color:#888}
+#musicControl.loading{border-color:#FFD0D6;animation:borderPulse 1s infinite}
+@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+@keyframes borderPulse{0%,100%{border-color:#C9A98C}50%{border-color:#FFD0D6}}
 
 </style></head><body>
 
-<!-- === MUSIK ICON ONLY - AUTO PLAY + MANUAL OFF === -->
-<button id="musicControl" aria-label="Toggle music" style="position:fixed;bottom:24px;right:24px;z-index:100;width:48px;height:48px;border-radius:50%;background:rgba(20,20,20,0.85);border:1.5px solid #C9A98C;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 0 1px rgba(201,169,140,.15);transition:all .3s ease;">
-  <span id="musicIcon" style="font-size:20px;line-height:1;transition:all .2s;">🔊</span>
+<!-- === MUSIK ICON ONLY - DEBUG AUTO PLAY === -->
+<button id="musicControl" aria-label="Toggle music" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:56px;height:56px;border-radius:50%;background:rgba(20,20,20,0.92);border:2px solid #C9A98C;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 4px 25px rgba(0,0,0,.5),0 0 0 1px rgba(201,169,140,.2);transition:all .3s ease;">
+  <span id="musicIcon" style="font-size:24px;line-height:1;">🔊</span>
 </button>
 
-<audio id="bgAudio" loop preload="auto" autoplay>
+<div id="musicStatus" style="position:fixed;bottom:90px;right:24px;z-index:9999;background:rgba(0,0,0,0.85);color:#C9A98C;font-size:10px;padding:6px 10px;border-radius:8px;display:none;max-width:200px;letter-spacing:.05em;"></div>
+
+<audio id="bgAudio" loop preload="auto" playsinline>
   <source src="music.mp3" type="audio/mpeg">
-  <source src="Lincoln_Score_-_All_My_Love_-_Coldplay_(mp3.pm).mp3" type="audio/mpeg">
+  <source src="music.mp3?v=2" type="audio/mpeg">
   <source src="./music.mp3" type="audio/mpeg">
+  <source src="Lincoln_Score_-_All_My_Love_-_Coldplay_(mp3.pm).mp3" type="audio/mpeg">
   <source src="./Lincoln_Score_-_All_My_Love_-_Coldplay_(mp3.pm).mp3" type="audio/mpeg">
+  <!-- fallback youtube-style file -->
+  <source src="all_my_love.mp3" type="audio/mpeg">
 </audio>
 
 <div id="viewport">
@@ -382,57 +366,110 @@ window.goTo = function(i){ triggerNyala(); if(_origGoTo) _origGoTo(i); else { cu
 
 
 <script>
-// === ICON SOUND ONLY - AUTO PLAY + MANUAL ===
 const bgAudio=document.getElementById('bgAudio');
 const btn=document.getElementById('musicControl');
 const icon=document.getElementById('musicIcon');
+const status=document.getElementById('musicStatus');
 let isPlaying=false;
 
-function setIcon(playing){
+function showStatus(msg, ms=3000){
+  if(!status) return;
+  status.textContent=msg;
+  status.style.display='block';
+  if(ms) setTimeout(()=>{status.style.display='none';}, ms);
+}
+
+function setIcon(playing, loading=false){
   isPlaying=playing;
   if(!btn || !icon) return;
+  btn.classList.remove('playing','muted','loading');
+  if(loading){ btn.classList.add('loading'); icon.textContent='⏳'; showStatus('Loading musik...'); return; }
   if(playing){
     icon.textContent='🔊';
     btn.classList.add('playing');
-    btn.classList.remove('muted');
-    btn.setAttribute('aria-label','Matikan musik');
+    showStatus('Musik ON - All My Love', 2000);
   } else {
     icon.textContent='🔇';
-    btn.classList.remove('playing');
     btn.classList.add('muted');
-    btn.setAttribute('aria-label','Putar musik');
+    showStatus('Musik OFF - Tap untuk play', 2500);
   }
 }
 
 function tryAutoPlay(){
-  if(!bgAudio) return;
-  bgAudio.volume=0.65;
-  const p=bgAudio.play();
-  if(p!==undefined){
-    p.then(()=>{ setIcon(true); }).catch(()=>{
+  if(!bgAudio) { showStatus('Audio element not found', 4000); return; }
+  setIcon(false, true);
+  bgAudio.volume=0.7;
+  bgAudio.muted=false;
+  console.log('Trying to play MP3...', bgAudio.currentSrc || bgAudio.src);
+  
+  const playPromise=bgAudio.play();
+  if(playPromise!==undefined){
+    playPromise.then(()=>{
+      setIcon(true);
+      console.log('MP3 PLAY SUCCESS');
+    }).catch((e)=>{
+      console.log('Autoplay blocked:', e);
       setIcon(false);
+      showStatus('Tap layar untuk play musik', 5000);
       const playOnce=()=>{
-        bgAudio.play().then(()=>{ setIcon(true); }).catch(()=>{});
+        bgAudio.play().then(()=>{
+          setIcon(true);
+          console.log('Play after tap SUCCESS');
+        }).catch((err)=>{
+          console.log('Play after tap FAIL:', err);
+          showStatus('Gagal play - cek file MP3', 4000);
+        });
         document.removeEventListener('click', playOnce);
         document.removeEventListener('touchstart', playOnce);
+        document.removeEventListener('touchend', playOnce);
       };
       document.addEventListener('click', playOnce, {once:true});
       document.addEventListener('touchstart', playOnce, {once:true});
+      document.addEventListener('touchend', playOnce, {once:true});
     });
   }
 }
 
-function toggleMusic(){
-  if(!bgAudio) return;
-  if(isPlaying){ bgAudio.pause(); setIcon(false); }
-  else { bgAudio.volume=0.65; bgAudio.play().then(()=>{ setIcon(true); }).catch(()=>{}); }
+// Debug events
+if(bgAudio){
+  bgAudio.addEventListener('error', (e)=>{
+    console.log('AUDIO ERROR', e, bgAudio.error);
+    const err = bgAudio.error ? bgAudio.error.code : 'unknown';
+    showStatus('Error MP3 - code:'+err+' - rename ke music.mp3', 5000);
+    setIcon(false);
+  });
+  bgAudio.addEventListener('canplay', ()=>{ console.log('Audio can play'); });
+  bgAudio.addEventListener('loadstart', ()=>{ console.log('Audio load start'); });
+  bgAudio.addEventListener('loadeddata', ()=>{ console.log('Audio loaded'); });
+  bgAudio.load();
 }
 
-window.addEventListener('load', ()=>{ setTimeout(tryAutoPlay, 600); });
-btn?.addEventListener('click', (e)=>{ e.stopPropagation(); toggleMusic(); });
-document.getElementById('viewport')?.addEventListener('click', ()=>{ if(!isPlaying) tryAutoPlay(); }, {once:true});
+function toggleMusic(){
+  if(!bgAudio) return;
+  if(isPlaying){
+    bgAudio.pause();
+    setIcon(false);
+  } else {
+    bgAudio.volume=0.7;
+    bgAudio.play().then(()=>{ setIcon(true); }).catch((e)=>{
+      showStatus('Gagal - cek file MP3', 3000);
+      console.log('Toggle fail', e);
+    });
+  }
+}
 
-if(bgAudio){ bgAudio.load(); bgAudio.volume=0.65; }
+window.addEventListener('load', ()=>{ setTimeout(tryAutoPlay, 800); });
+btn?.addEventListener('click', (e)=>{ e.stopPropagation(); toggleMusic(); });
+
+// Also try on first interaction with viewport
+let firstInteractionDone=false;
+function firstInteraction(){
+  if(firstInteractionDone) return;
+  firstInteractionDone=true;
+  if(!isPlaying) tryAutoPlay();
+}
+document.addEventListener('click', firstInteraction);
+document.addEventListener('touchstart', firstInteraction);
 </script>
 
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
+</body></html>
