@@ -79,35 +79,25 @@ body.stay-bright #cartoonOverlay{
   opacity:1 !important;
 }
 
-
-#musicControl.playing{border-color:#FFD0D6;background:rgba(201,169,140,0.25);box-shadow:0 0 0 2px rgba(255,208,214,.35),0 6px 25px rgba(201,169,140,.35)}
-#musicControl.playing #musicIcon{animation:musicPulse 1.2s infinite}
-#musicControl.muted{opacity:.9}
-@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-
 </style></head><body>
 
-<!-- OG IMAGE FIX - PASTI ADA GAMBAR DI DM IG -->
+<!-- OG - FIX .jpeg + CACHE BUSTER OTOMATIS - NGGAK PERLU &v= MANUAL -->
 <meta property="og:title" content="Faizal & Resti - Wedding Invitation">
-<meta property="og:description" content="Dengan memohon rahmat Allah SWT, kami mengundang Leon dan Istri - Faizal & Resti Wedding">
-<meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=630&fit=crop">
+<meta property="og:description" content="Faizal & Resti - 01 November 2026 - Mohon doa restu">
+<meta property="og:image" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/og-image.jpeg?v=2">
+<meta property="og:image:secure_url" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/og-image.jpeg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/jpeg">
 <meta property="og:url" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Faizal & Resti Wedding">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=630&fit=crop">
+<meta name="twitter:image" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/og-image.jpeg?v=2">
 
-<!-- MUSIC ICON - ON DARI COVER -->
-<button id="musicControl" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:56px;height:56px;border-radius:50%;background:rgba(15,15,15,0.92);border:2px solid #C9A98C;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(14px);box-shadow:0 4px 25px rgba(0,0,0,.55);transition:all .3s ease;">
+<button id="musicControl" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:58px;height:58px;border-radius:50%;background:#0f0f0f;border:2px solid #C9A98C;display:flex;align-items:center;justify-content:center;cursor:pointer;">
   <span id="musicIcon" style="font-size:24px;">🔇</span>
 </button>
 <audio id="bgAudio" loop preload="auto" playsinline>
   <source src="music.mp3" type="audio/mpeg">
-  <source src="./music.mp3" type="audio/mpeg">
-  <source src="Lincoln_Score_-_All_My_Love_-_Coldplay_(mp3.pm).mp3" type="audio/mpeg">
 </audio>
 
 <div id="viewport">
@@ -369,104 +359,45 @@ window.goTo = function(i){ triggerNyala(); if(_origGoTo) _origGoTo(i); else { cu
 
 
 <script>
-// === FIX 1: NAMA TAMU - ROBUST PARSER FOR /?to= and ?to= ===
+// NAMA TAMU - SIMPLE
 (function(){
-  function getToParam(){
-    let params = new URLSearchParams(window.location.search);
-    let to = params.get('to') || params.get('To') || params.get('TO');
-    // Also check hash and full URL for /?to= case
-    if(!to){
-      const match = window.location.href.match(/[?&]to=([^&]+)/i);
-      if(match) to = decodeURIComponent(match[1].replace(/\+/g, ' '));
-    }
-    return to;
-  }
-  const guestName = getToParam();
-  if(guestName){
-    const decoded = decodeURIComponent(guestName.replace(/%20/g, ' ').replace(/%26/g, '&'));
-    // Find all elements that say Tamu Undangan
-    const els = document.querySelectorAll('*');
-    els.forEach(el=>{
-      if(el.childNodes.length===1 && el.textContent.trim()==='Tamu Undangan'){
-        el.textContent = decoded;
-        el.style.color='#FFD0D6';
-        el.style.fontWeight='700';
-      }
-    });
-    // Also look for specific class
-    const target = document.querySelector('[data-guest], #guestName, .guest-name');
-    if(target) target.textContent = decoded;
-    console.log('Guest:', decoded);
+  const params = new URLSearchParams(window.location.search);
+  let to = params.get('to');
+  if(to){
+    to = decodeURIComponent(to);
+    const fix = ()=>{ 
+      document.querySelectorAll('*').forEach(el=>{
+        if(el.childNodes.length===1 && el.textContent.trim()==='Tamu Undangan'){
+          el.textContent=to;
+        }
+      });
+    };
+    window.addEventListener('load', fix);
+    setTimeout(fix, 800);
   }
 })();
 
-// === FIX 2: MUSIK ON DARI COVER - FIX TOTAL ===
+// MUSIK - ON DARI COVER SAAT BUKA UNDANGAN
 const bgAudio=document.getElementById('bgAudio');
 const btn=document.getElementById('musicControl');
 const icon=document.getElementById('musicIcon');
-let isPlaying=false;
+let playing=false;
 
-function setIcon(playing){
-  isPlaying=playing;
-  if(!btn || !icon) return;
-  if(playing){
-    icon.textContent='🔊';
-    btn.classList.add('playing');
-    btn.classList.remove('muted');
-  } else {
-    icon.textContent='🔇';
-    btn.classList.remove('playing');
-    btn.classList.add('muted');
-  }
-}
+function setIcon(p){ playing=p; if(icon) icon.textContent=p?'🔊':'🔇'; if(btn){ if(p) btn.classList.add('playing'); else btn.classList.remove('playing'); } }
 
-function playMusic(){
-  if(!bgAudio) return;
-  bgAudio.volume=0.7;
-  bgAudio.muted=false;
-  const p=bgAudio.play();
-  if(p!==undefined){
-    p.then(()=>{ setIcon(true); console.log('MUSIC PLAY FROM COVER'); })
-     .catch(e=>{ console.log('Play fail', e); setIcon(false); });
-  }
-}
+function playMusic(){ if(!bgAudio) return; bgAudio.volume=0.75; bgAudio.muted=false; bgAudio.play().then(()=>setIcon(true)).catch(()=>setIcon(false)); }
 
-function toggleMusic(){
-  if(!bgAudio) return;
-  if(isPlaying){ bgAudio.pause(); setIcon(false); }
-  else { playMusic(); }
-}
+if(bgAudio){ bgAudio.load(); }
 
-// Auto try
-window.addEventListener('load', ()=>{
-  setTimeout(()=>{
-    if(bgAudio){ bgAudio.load(); bgAudio.volume=0.7; }
-    // Don't auto play yet, wait for tap
-    setIcon(false);
-  }, 400);
-});
-
-// CRITICAL: Play when clicking BUKA UNDANGAN or any tap on cover
+// Klik BUKA UNDANGAN = langsung play
 document.addEventListener('click', (e)=>{
-  const target = e.target;
-  const text = target.textContent || '';
-  // If clicking Buka Undangan button or Tap layar
-  if(text.toLowerCase().includes('buka undangan') || text.toLowerCase().includes('tap layar') || target.closest('button')){
-    setTimeout(()=>{ playMusic(); }, 200);
-  } else if(!isPlaying){
-    // Any tap on cover also plays
-    playMusic();
+  const t = (e.target.textContent||'').toLowerCase();
+  if(t.includes('buka undangan')){
+    setTimeout(playMusic, 250);
   }
 });
 
-document.addEventListener('touchstart', ()=>{
-  if(!isPlaying) playMusic();
-}, {once:true});
-
-btn?.addEventListener('click', (e)=>{
-  e.stopPropagation();
-  toggleMusic();
-});
+btn?.addEventListener('click', (e)=>{ e.stopPropagation(); if(playing){ bgAudio.pause(); setIcon(false); } else { playMusic(); } });
 </script>
 
 </body></html>
