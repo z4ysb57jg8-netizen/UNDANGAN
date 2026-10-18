@@ -1,22 +1,5 @@
 <!DOCTYPE html>
-<html lang="id"><head>
-
-<!-- OG PREVIEW FOR INSTAGRAM / WHATSAPP - ADA GAMBAR -->
-<meta property="og:title" content="Faizal & Resti - Wedding Invitation">
-<meta property="og:description" content="Dengan memohon rahmat & ridho Allah SWT, kami mengundang Leon dan Istri di pernikahan Faizal & Resti. Mohon doa restu.">
-<meta property="og:image" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:url" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Faizal & Resti Wedding">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Faizal & Resti - Wedding">
-<meta name="twitter:description" content="Undangan Pernikahan Faizal & Resti">
-<meta name="twitter:image" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/og-image.jpg">
-<link rel="image_src" href="https://z4ysb57jg8-netizen.github.io/UNDANGAN/og-image.jpg">
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>Faizal & Resti - Wedding</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -97,22 +80,34 @@ body.stay-bright #cartoonOverlay{
 }
 
 
-#musicControl:hover{transform:scale(1.08);border-color:#FFD0D6}
-#musicControl.playing{background:rgba(201,169,140,0.25);border-color:#FFD0D6;box-shadow:0 0 0 2px rgba(255,208,214,.35),0 6px 25px rgba(201,169,140,.35)}
-#musicControl.playing #musicIcon{animation:musicPulse 1.3s ease-in-out infinite}
-#musicControl.muted{background:rgba(70,70,70,0.75);border-color:#777;opacity:.85}
-@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+#musicControl.playing{border-color:#FFD0D6;background:rgba(201,169,140,0.25);box-shadow:0 0 0 2px rgba(255,208,214,.35),0 6px 25px rgba(201,169,140,.35)}
+#musicControl.playing #musicIcon{animation:musicPulse 1.2s infinite}
+#musicControl.muted{opacity:.9}
+@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
 
 </style></head><body>
 
-<!-- === MUSIK ICON - ON DI HALAMAN AWAL COVER === -->
-<button id="musicControl" aria-label="Toggle music" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:54px;height:54px;border-radius:50%;background:rgba(15,15,15,0.92);border:2px solid #C9A98C;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(14px);box-shadow:0 4px 25px rgba(0,0,0,.55),0 0 0 1px rgba(201,169,140,.2);transition:all .3s ease;">
-  <span id="musicIcon" style="font-size:22px;line-height:1;">🔊</span>
-</button>
+<!-- OG IMAGE FIX - PASTI ADA GAMBAR DI DM IG -->
+<meta property="og:title" content="Faizal & Resti - Wedding Invitation">
+<meta property="og:description" content="Dengan memohon rahmat Allah SWT, kami mengundang Leon dan Istri - Faizal & Resti Wedding">
+<meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=630&fit=crop">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:url" content="https://z4ysb57jg8-netizen.github.io/UNDANGAN/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Faizal & Resti Wedding">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=630&fit=crop">
 
+<!-- MUSIC ICON - ON DARI COVER -->
+<button id="musicControl" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:56px;height:56px;border-radius:50%;background:rgba(15,15,15,0.92);border:2px solid #C9A98C;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(14px);box-shadow:0 4px 25px rgba(0,0,0,.55);transition:all .3s ease;">
+  <span id="musicIcon" style="font-size:24px;">🔇</span>
+</button>
 <audio id="bgAudio" loop preload="auto" playsinline>
   <source src="music.mp3" type="audio/mpeg">
   <source src="./music.mp3" type="audio/mpeg">
+  <source src="Lincoln_Score_-_All_My_Love_-_Coldplay_(mp3.pm).mp3" type="audio/mpeg">
 </audio>
 
 <div id="viewport">
@@ -374,7 +369,38 @@ window.goTo = function(i){ triggerNyala(); if(_origGoTo) _origGoTo(i); else { cu
 
 
 <script>
-// === MUSIK ON DI HALAMAN AWAL COVER - FIX ===
+// === FIX 1: NAMA TAMU - ROBUST PARSER FOR /?to= and ?to= ===
+(function(){
+  function getToParam(){
+    let params = new URLSearchParams(window.location.search);
+    let to = params.get('to') || params.get('To') || params.get('TO');
+    // Also check hash and full URL for /?to= case
+    if(!to){
+      const match = window.location.href.match(/[?&]to=([^&]+)/i);
+      if(match) to = decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+    return to;
+  }
+  const guestName = getToParam();
+  if(guestName){
+    const decoded = decodeURIComponent(guestName.replace(/%20/g, ' ').replace(/%26/g, '&'));
+    // Find all elements that say Tamu Undangan
+    const els = document.querySelectorAll('*');
+    els.forEach(el=>{
+      if(el.childNodes.length===1 && el.textContent.trim()==='Tamu Undangan'){
+        el.textContent = decoded;
+        el.style.color='#FFD0D6';
+        el.style.fontWeight='700';
+      }
+    });
+    // Also look for specific class
+    const target = document.querySelector('[data-guest], #guestName, .guest-name');
+    if(target) target.textContent = decoded;
+    console.log('Guest:', decoded);
+  }
+})();
+
+// === FIX 2: MUSIK ON DARI COVER - FIX TOTAL ===
 const bgAudio=document.getElementById('bgAudio');
 const btn=document.getElementById('musicControl');
 const icon=document.getElementById('musicIcon');
@@ -383,23 +409,25 @@ let isPlaying=false;
 function setIcon(playing){
   isPlaying=playing;
   if(!btn || !icon) return;
-  btn.classList.remove('playing','muted');
   if(playing){
     icon.textContent='🔊';
     btn.classList.add('playing');
+    btn.classList.remove('muted');
   } else {
     icon.textContent='🔇';
+    btn.classList.remove('playing');
     btn.classList.add('muted');
   }
 }
 
 function playMusic(){
   if(!bgAudio) return;
-  bgAudio.volume=0.68;
+  bgAudio.volume=0.7;
   bgAudio.muted=false;
   const p=bgAudio.play();
   if(p!==undefined){
-    p.then(()=>{ setIcon(true); }).catch(()=>{ setIcon(false); });
+    p.then(()=>{ setIcon(true); console.log('MUSIC PLAY FROM COVER'); })
+     .catch(e=>{ console.log('Play fail', e); setIcon(false); });
   }
 }
 
@@ -409,52 +437,36 @@ function toggleMusic(){
   else { playMusic(); }
 }
 
-// 1. Coba auto-play pas load
+// Auto try
 window.addEventListener('load', ()=>{
   setTimeout(()=>{
-    if(bgAudio){
-      bgAudio.volume=0.68;
-      bgAudio.play().then(()=>{ setIcon(true); }).catch(()=>{
-        setIcon(false);
-        console.log('Autoplay blocked - waiting tap');
-      });
-    }
-  }, 500);
+    if(bgAudio){ bgAudio.load(); bgAudio.volume=0.7; }
+    // Don't auto play yet, wait for tap
+    setIcon(false);
+  }, 400);
 });
 
-// 2. Play pas tap DIMANAPUN di halaman awal (cover) - ini kuncinya!
-document.addEventListener('click', ()=>{
-  if(!isPlaying && bgAudio){
+// CRITICAL: Play when clicking BUKA UNDANGAN or any tap on cover
+document.addEventListener('click', (e)=>{
+  const target = e.target;
+  const text = target.textContent || '';
+  // If clicking Buka Undangan button or Tap layar
+  if(text.toLowerCase().includes('buka undangan') || text.toLowerCase().includes('tap layar') || target.closest('button')){
+    setTimeout(()=>{ playMusic(); }, 200);
+  } else if(!isPlaying){
+    // Any tap on cover also plays
     playMusic();
   }
-}, {once:false});
+});
 
 document.addEventListener('touchstart', ()=>{
-  if(!isPlaying && bgAudio){
-    playMusic();
-  }
-}, {once:false});
-
-// 3. Khusus tombol buka undangan (kalau ada)
-const openBtn = document.querySelector('[onclick*="open"], .open-btn, #openInvitation, button');
-if(openBtn){
-  // Also listen to all buttons
-}
-document.querySelectorAll('button, a, [role="button"]').forEach(el=>{
-  el.addEventListener('click', ()=>{
-    setTimeout(()=>{ if(!isPlaying) playMusic(); }, 300);
-  });
-});
+  if(!isPlaying) playMusic();
+}, {once:true});
 
 btn?.addEventListener('click', (e)=>{
   e.stopPropagation();
   toggleMusic();
 });
-
-if(bgAudio){
-  bgAudio.load();
-  bgAudio.volume=0.68;
-}
 </script>
 
 </body></html>
