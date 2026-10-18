@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE WEDDING OF Faizal & Resti - 01 NOV 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:#fff5f7;color:#4a2c2a;overflow-x:hidden}
+.snap{scroll-snap-type:y mandatory;height:100vh;overflow-y:scroll}
+section{scroll-snap-align:start;min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.cover{background:linear-gradient(135deg,#ffafc3 0%,#ffc8a2 50%,#ffb6c1 100%);text-align:center;flex-direction:column}
+.cover h1{font-family:'Great Vibes',cursive;font-size:52px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.cover .date{margin-top:10px;font-weight:600;letter-spacing:3px;color:#fff;background:rgba(0,0,0,0.2);padding:8px 18px;border-radius:20px}
+.card{background:#fff;border-radius:24px;padding:32px 24px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.12);margin:20px}
+.btn{display:inline-block;background:#d45d79;color:#fff;padding:14px 28px;border-radius:30px;text-decoration:none;font-weight:600;margin:8px;box-shadow:0 8px 20px rgba(212,93,121,0.3)}
+h2{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;color:#d45d79}
+p{line-height:1.7;font-size:14px}
+.bismillah{font-family:'Great Vibes';font-size:26px;color:#d45d79;margin-bottom:10px}
+.tap-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.5);color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.gallery div{aspect-ratio:1;background:linear-gradient(135deg,#ffc8a2,#ffafc3);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.norek{background:#fff5f7;border:1px dashed #d45d79;padding:12px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+.copy{color:#d45d79;font-weight:600;cursor:pointer}
+#adminBox{background:#fff;border:2px solid #d45d79;border-radius:16px;padding:16px;margin:16px 0}
+#adminBox input{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;margin:8px 0}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="snap" id="snap">
+
+<section class="cover" onclick="document.getElementById('s2').scrollIntoView({behavior:'smooth'})">
+<h1>Faizal & Resti</h1>
+<div class="date">01 NOVEMBER 2026</div>
+<p style="color:#fff;margin-top:20px;max-width:320px">KEPADA YTH.<br><span id="guestName" style="font-weight:700;font-size:18px">Tamu Undangan</span><br><br>BUKA UNDANGAN</p>
+<div class="tap-hint">TAP LAYAR UNTUK LANJUT ↓</div>
+</section>
+
+<section id="s2" style="background:#fff5f7" onclick="document.getElementById('s3').scrollIntoView({behavior:'smooth'})">
+<div class="card" style="text-align:center">
+<div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+<p>Assalamu'alaikum Wr. Wb.<br><br>Dengan memohon rahmat Allah SWT, kami mengundang ke pernikahan kami.</p>
+<br>
+<p><b>QS. Ar-Rum 21</b><br>Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu agar kamu tenteram kepadanya, dan dijadikan rasa kasih sayang di antaramu.</p>
+<div class="tap-hint" style="position:relative;bottom:0;margin-top:20px">TAP UNTUK LANJUT</div>
+</div>
+</section>
+
+<section id="s3" style="background:#fff" onclick="document.getElementById('s4').scrollIntoView({behavior:'smooth'})">
+<div class="card" style="text-align:center">
+<h2>Mempelai</h2>
+<br>
+<p style="font-size:18px;font-weight:600">Faizal Adhipura Putra</p>
+<p>Bpk. Iskandar & Ibu Dewi Suhita</p>
+<br>
+<p style="font-size:24px">💍</p>
+<br>
+<p style="font-size:18px;font-weight:600">Resti Damayanti Putri</p>
+<p>Bpk. Aceng Rahmat & Ibu Yayan</p>
+<div class="tap-hint" style="position:relative;bottom:0;margin-top:20px">TAP UNTUK LANJUT</div>
+</div>
+</section>
+
+<section id="s4" style="background:#fff5f7" onclick="document.getElementById('s5').scrollIntoView({behavior:'smooth'})">
+<div class="card" style="text-align:center">
+<h2>Hari Bahagia</h2>
+<p><b>01 NOV 2026</b><br>09:00 WIB Akad<br>10:00-20:00 WIB Resepsi</p>
+<br>
+<p><b>Menuju<br>Maison Villa & Resto<br>Pancawati, Caringin, Bogor</b></p>
+<a class="btn" href="https://maps.app.goo.gl/" target="_blank">LIHAT MAPS 📍</a>
+<div class="tap-hint" style="position:relative;bottom:0;margin-top:20px">TAP UNTUK LANJUT</div>
+</div>
+</section>
+
+<section id="s5" style="background:#fff" onclick="document.getElementById('s6').scrollIntoView({behavior:'smooth'})">
+<div class="card">
+<h2 style="text-align:center">Stories of Love</h2>
+<p style="font-size:13px;text-align:justify">Cinta kami pada tahun 2021 semula berawal dimana kami saling bertemu disebuah cafe di bogor dan saling berkenalan pada saat itu kami memiliki pasangan masing-masing dan berkenalan sebagai teman beberapa bulan kemudian kami semakin dekat dan memutuskan untuk pacaran karena satu sama lain sudah putus dengan pasangan masing-masing. Kemudian setahun berjalan kami memutuskan untuk menyudahi hubungan kami pada 2022. Setelah kami tidak berkomunikasi sibuk dengan kegiatan dan pasangan masing-masing pada tahun 2023 akhir kami kembali berkomunikasi dalam waktu seminggu dan memutuskan untuk menjalin hubungan kembali dengan hubungan yang lebih serius. Memang tidak mudah awalnya saat kami memutuskan untuk kembali pacaran namun kami saling meyakinkan satu sama lain dan dengan kekuatan cinta kami bertahan, 3 tahun berlalu selama waktu tersebut kami mengetahui lebih dalam sifat dan sikap satu sama lain dan selama waktu tersebut kami semakin percaya dan yakin dengan satu sama lain untuk memutuskan tujuan hubungan kami. Saat ini pada 1 november 2026 kami memutuskan untuk meneruskan hubungan kami kejenjang yang lebih serius dan direstui oleh allah swt, kami memutuskan menikah ! Ya menikah :))</p>
+<div class="tap-hint" style="position:relative;bottom:0;margin-top:20px">TAP UNTUK LANJUT</div>
+</div>
+</section>
+
+<section id="s6" style="background:#fff5f7" onclick="document.getElementById('s7').scrollIntoView({behavior:'smooth'})">
+<div class="card" style="text-align:center">
+<h2>Our Gallery</h2>
+<p style="font-size:12px">Kartun proposal jadi cover animasi</p>
+<div class="gallery">
+<div>👩‍❤️‍👨</div><div>💍</div><div>🏡</div><div>🎉</div>
+</div>
+<div class="tap-hint" style="position:relative;bottom:0;margin-top:20px">TAP UNTUK LANJUT</div>
+</div>
+</section>
+
+<section id="s7" style="background:#fff">
+<div class="card">
+<h2 style="text-align:center">Doa Restu</h2>
+<div style="font-size:12px;line-height:1.6">
+• Bpk H. Abdul Pakih bin H. Hardjaludin • Kel Besar Alm Bpk Tubagus Bantardjar • Kel Besar Alm Bpk Moh Sirod • Bapak Lurah H. Iqbal Jayadi • Ketua RT Ujang - RW Enday • Keluarga besar pak mustar pasir tengah • Keluarga besar bpk Aceng (Sukabumi) • Keluarga Besar Subang, Cimande • Bapak Hoer, Ayat Acep, Elis Yuni Ai Yati
+</div>
+<br>
+<p style="text-align:center">Tanda Kasih</p>
+<div class="norek"><span>BCA Faizal: <b>0954329786</b></span><span class="copy" onclick="navigator.clipboard.writeText('0954329786');alert('Copied!')">COPY</span></div>
+<div class="norek"><span>BCA Resti: <b>1290574672</b></span><span class="copy" onclick="navigator.clipboard.writeText('1290574672');alert('Copied!')">COPY</span></div>
+<br>
+<div style="text-align:center">
+<a class="btn" href="https://wa.me/628953429786?text=Hadir" target="_blank">KONFIRMASI WA</a>
+</div>
+<br>
+<div id="adminPanel">
+<div id="adminBox">
+<b>🎁 Generator Link Personal (ADMIN ONLY)</b><br><small>Isi nama tamu, link auto hide untuk tamu</small>
+<input id="namaTamu" placeholder="Contoh: Zuqni Fahma Suryo dan Fika">
+<input id="hasilLink" readonly placeholder="Link akan muncul disini">
+<button class="btn" style="width:100%" onclick="buatLink()">GENERATE LINK</button>
+<button class="btn" style="width:100%;background:#4a2c2a" onclick="copyLink()">COPY LINK & KIRIM WA</button>
+<p style="font-size:10px;margin-top:8px">* Jika link dibuka pakai ?to=Nama, box ini otomatis hilang untuk tamu</p>
+</div>
+</div>
+
+<p style="text-align:center;font-size:11px;margin-top:20px">Wassalamu'alaikum Warahmatullahi Wabarakatuh<br>© 2026 Faizal & Resti • Black Mocca Baby Pink Luxury • Cartoon Moon Proposal</p>
+<p style="text-align:center;margin-top:10px"><a href="#" onclick="document.querySelector('.snap').scrollTo({top:0,behavior:'smooth'});return false">KEMBALI KE AWAL ↑</a></p>
+</div>
+</section>
+
+</div>
+
+<script>
+// Get ?to param
+const params = new URLSearchParams(window.location.search);
+const to = params.get('to');
+if(to){
+  document.getElementById('guestName').innerText = decodeURIComponent(to);
+  const admin = document.getElementById('adminPanel');
+  if(admin) admin.classList.add('hidden');
+}
+function buatLink(){
+  const nama = document.getElementById('namaTamu').value.trim();
+  if(!nama){alert('Isi nama tamu dulu');return}
+  const base = window.location.origin + window.location.pathname;
+  const link = base + '?to=' + encodeURIComponent(nama);
+  document.getElementById('hasilLink').value = link;
+}
+function copyLink(){
+  const link = document.getElementById('hasilLink').value;
+  if(!link){alert('Generate dulu');return}
+  navigator.clipboard.writeText(link);
+  const nama = document.getElementById('namaTamu').value;
+  const wa = 'https://wa.me/?text=' + encodeURIComponent('Assalamualaikum ' + nama + ', kami mengundang ke pernikahan Faizal & Resti 01 Nov 2026 %0A' + link);
+  window.open(wa,'_blank');
+}
+</script>
+</body>
+</html>
 
